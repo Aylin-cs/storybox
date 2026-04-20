@@ -49,8 +49,37 @@ describe("Auth Tests", () => {
     });
 
     expect(res.statusCode).toBe(200);
-    expect(res.body.token).toBeDefined();
+    expect(res.body.accessToken).toBeDefined();
+    expect(res.body.refreshToken).toBeDefined();
   });
+
+    test("Refresh token success", async () => {
+    const loginRes = await request(app).post(baseUrl + "/login").send({
+      email: testUser.email,
+      password: testUser.password,
+    });
+
+    const refreshRes = await request(app).post(baseUrl + "/refresh").send({
+      refreshToken: loginRes.body.refreshToken,
+    });
+
+    expect(refreshRes.statusCode).toBe(200);
+    expect(refreshRes.body.accessToken).toBeDefined();
+    expect(refreshRes.body.refreshToken).toBeDefined();
+  });
+
+  test("Logout success", async () => {
+  const loginRes = await request(app).post(baseUrl + "/login").send({
+    email: testUser.email,
+    password: testUser.password,
+  });
+
+  const logoutRes = await request(app).post(baseUrl + "/logout").send({
+    refreshToken: loginRes.body.refreshToken,
+  });
+
+  expect(logoutRes.statusCode).toBe(200);
+});
 
   test("Login fail", async () => {
     const res = await request(app).post(baseUrl + "/login").send({
