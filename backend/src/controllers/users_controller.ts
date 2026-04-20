@@ -13,7 +13,8 @@ class UsersController {
 
   async getById(req: Request, res: Response) {
     try {
-      const user = await userModel.findById(req.params.id);
+      const id = req.params.userId || req.params.id;
+      const user = await userModel.findById(id);
 
       if (!user) {
         return res.status(404).json({ message: "User not found" });

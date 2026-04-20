@@ -9,17 +9,14 @@ describe("Users Tests", () => {
   const testUser = {
     userName: "users_test_user",
     email: "users_test@gmail.com",
-    password: "123456"
+    password: "123456",
   };
 
   let createdUserId: string;
 
   beforeAll(async () => {
     await userModel.deleteMany({
-      $or: [
-        { email: testUser.email },
-        { userName: testUser.userName },
-      ],
+      $or: [{ email: testUser.email }, { userName: testUser.userName }],
     });
   });
 
@@ -43,12 +40,39 @@ describe("Users Tests", () => {
     expect(res.body._id).toBe(createdUserId);
   });
 
+  test("Get current user (me)", async () => {
+    const authUser = {
+      userName: "me_test_user",
+      email: "me_test@gmail.com",
+      password: "123456",
+    };
+
+    await userModel.deleteMany({
+      $or: [{ email: authUser.email }, { userName: authUser.userName }],
+    });
+
+    await request(app).post("/auth/register").send(authUser);
+
+    const loginRes = await request(app).post("/auth/login").send({
+      email: authUser.email,
+      password: authUser.password,
+    });
+
+    const res = await request(app)
+      .get("/users/me")
+      .set("Authorization", "Bearer " + loginRes.body.accessToken);
+
+    expect(res.statusCode).toBe(200);
+    expect(res.body._id).toBeDefined();
+
+    await userModel.deleteMany({
+      $or: [{ email: authUser.email }, { userName: authUser.userName }],
+    });
+  });
+  
   afterAll(async () => {
     await userModel.deleteMany({
-      $or: [
-        { email: testUser.email },
-        { userName: testUser.userName },
-      ],
+      $or: [{ email: testUser.email }, { userName: testUser.userName }],
     });
 
     await mongoose.connection.close();
