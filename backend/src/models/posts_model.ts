@@ -5,6 +5,7 @@ export interface IPost {
   ownerId: mongoose.Types.ObjectId;
   image_uri?: string;
   created_at?: Date;
+  comment_count?: number;
 }
 
 const postSchema = new mongoose.Schema<IPost>({
@@ -24,6 +25,10 @@ const postSchema = new mongoose.Schema<IPost>({
   created_at: {
     type: Date,
     default: Date.now,
+  },
+  comment_count: {
+    type: Number,
+    default: 0,
   },
 });
 
