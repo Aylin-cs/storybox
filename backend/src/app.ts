@@ -4,6 +4,7 @@ import cors from "cors";
 import usersRoutes from "./routes/users_routes";
 import authRoutes from "./routes/auth_routes";
 import postsRoutes from "./routes/posts_routes";
+import commentsRoutes from "./routes/comments_routes";
 const app = express();
 
 app.use(cors());
@@ -11,6 +12,7 @@ app.use(express.json());
 app.use("/users", usersRoutes);
 app.use("/auth", authRoutes);
 app.use("/posts", postsRoutes);
+app.use("/comments", commentsRoutes);
 
 mongoose.connect("mongodb://127.0.0.1:27017/storybox")
   .then(() => console.log("MongoDB connected"))
