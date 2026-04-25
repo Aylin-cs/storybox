@@ -20,4 +20,8 @@ router.put("/:id", authMiddleware, (req, res) =>
   commentsController.update(req, res)
 );
 
+router.delete("/:id", authMiddleware, (req, res) =>
+  commentsController.delete(req, res)
+);
+
 export default router;
