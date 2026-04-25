@@ -7,6 +7,7 @@ import postsRoutes from "./routes/posts_routes";
 import commentsRoutes from "./routes/comments_routes";
 import dotenv from "dotenv";
 import { setupSwagger } from "./swagger";
+import aiRoutes from "./routes/ai_routes";
 dotenv.config();
 const app = express();
 
@@ -16,6 +17,7 @@ app.use("/users", usersRoutes);
 app.use("/auth", authRoutes);
 app.use("/posts", postsRoutes);
 app.use("/comments", commentsRoutes);
+app.use("/ai", aiRoutes);
 setupSwagger(app);
 
 mongoose.connect(process.env.MONGO_URI!)

@@ -24,3 +24,12 @@ Authorization: Bearer YOUR_ACCESS_TOKEN
   "postId": "69ecf105835bbb0f60042eba",
   "content": "my first comment"
 }
+
+###
+POST http://localhost:3000/ai/caption
+Content-Type: application/json
+Authorization: Bearer YOUR_ACCESS_TOKEN
+
+{
+  "content": "I started learning React today and built my first component"
+}
