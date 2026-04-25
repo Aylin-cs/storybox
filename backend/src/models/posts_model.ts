@@ -6,6 +6,7 @@ export interface IPost {
   image_uri?: string;
   created_at?: Date;
   comment_count?: number;
+  likes: mongoose.Types.ObjectId[];
 }
 
 const postSchema = new mongoose.Schema<IPost>({
@@ -30,6 +31,11 @@ const postSchema = new mongoose.Schema<IPost>({
     type: Number,
     default: 0,
   },
+  likes: {
+  type: [mongoose.Schema.Types.ObjectId],
+  ref: "Users",
+  default: [],
+},
 });
 
 export const postModel = mongoose.model<IPost>("Posts", postSchema);
