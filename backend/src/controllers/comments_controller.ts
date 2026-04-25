@@ -31,20 +31,20 @@ class CommentsController {
   }
 
   async getAll(req: Request, res: Response) {
-    try {
-      const { postId } = req.query;
+  try {
+    const postId = req.query.postId as string;
 
-      if (postId) {
-        const comments = await commentModel.find({ postId });
-        return res.status(200).json(comments);
-      }
-
-      const comments = await commentModel.find();
-      res.status(200).json(comments);
-    } catch {
-      res.status(500).json({ message: "Failed to get comments" });
+    if (postId) {
+      const comments = await commentModel.find({ postId });
+      return res.status(200).json(comments);
     }
+
+    const comments = await commentModel.find();
+    res.status(200).json(comments);
+  } catch {
+    res.status(500).json({ message: "Failed to get comments" });
   }
+}
 
   async getById(req: Request, res: Response) {
     try {
