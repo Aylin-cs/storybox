@@ -4,17 +4,22 @@ import { postModel } from "../models/posts_model";
 
 class PostsController {
   async create(req: Request, res: Response) {
-    try {
-      const userId = req.params.userId;
-      const newPost = await postModel.create({
-        ...req.body,
-        ownerId: userId,
-      });
-      res.status(201).json(newPost);
-    } catch {
-      res.status(500).json({ message: "Failed to create post" });
-    }
+  try {
+    const userId = req.params.userId as string;
+
+    const imageUri = req.file ? req.file.filename : "";
+
+    const newPost = await postModel.create({
+      ...req.body,
+      ownerId: userId,
+      image_uri: imageUri,
+    });
+
+    res.status(201).json(newPost);
+  } catch {
+    res.status(500).json({ message: "Failed to create post" });
   }
+}
 
   async getAll(req: Request, res: Response) {
     try {
