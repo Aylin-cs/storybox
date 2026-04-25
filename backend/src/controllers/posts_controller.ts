@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import mongoose from "mongoose";
 import { postModel } from "../models/posts_model";
 
 class PostsController {
@@ -16,30 +17,30 @@ class PostsController {
   }
 
   async getAll(req: Request, res: Response) {
-  try {
-    const page = Number(req.query.page) || 1;
-    const limit = Number(req.query.limit) || 10;
-    const skip = (page - 1) * limit;
+    try {
+      const page = Number(req.query.page) || 1;
+      const limit = Number(req.query.limit) || 10;
+      const skip = (page - 1) * limit;
 
-    const posts = await postModel
-      .find()
-      .sort({ created_at: -1 })
-      .skip(skip)
-      .limit(limit);
+      const posts = await postModel
+        .find()
+        .sort({ created_at: -1 })
+        .skip(skip)
+        .limit(limit);
 
-    const totalPosts = await postModel.countDocuments();
+      const totalPosts = await postModel.countDocuments();
 
-    res.status(200).json({
-      page,
-      limit,
-      totalPosts,
-      totalPages: Math.ceil(totalPosts / limit),
-      posts,
-    });
-  } catch {
-    res.status(500).json({ message: "Failed to get posts" });
+      res.status(200).json({
+        page,
+        limit,
+        totalPosts,
+        totalPages: Math.ceil(totalPosts / limit),
+        posts,
+      });
+    } catch {
+      res.status(500).json({ message: "Failed to get posts" });
+    }
   }
-}
 
   async update(req: Request, res: Response) {
     try {
@@ -56,7 +57,7 @@ class PostsController {
       const updatedPost = await postModel.findByIdAndUpdate(
         req.params.id,
         req.body,
-        { new: true },
+        { new: true }
       );
 
       res.status(200).json(updatedPost);
@@ -82,6 +83,38 @@ class PostsController {
       res.status(200).json({ message: "Post deleted" });
     } catch {
       res.status(500).json({ message: "Failed to delete post" });
+    }
+  }
+
+  async like(req: Request, res: Response) {
+    try {
+      const userId = req.params.userId as string;
+      const post = await postModel.findById(req.params.id);
+
+      if (!post) {
+        return res.status(404).json({ message: "Post not found" });
+      }
+
+      const liked = post.likes.some(
+        (id) => id.toString() === userId
+      );
+
+      if (liked) {
+        post.likes = post.likes.filter(
+          (id) => id.toString() !== userId
+        );
+      } else {
+        post.likes.push(new mongoose.Types.ObjectId(userId));
+      }
+
+      await post.save();
+
+      res.status(200).json({
+        likesCount: post.likes.length,
+        liked: !liked,
+      });
+    } catch {
+      res.status(500).json({ message: "Failed to like post" });
     }
   }
 }
