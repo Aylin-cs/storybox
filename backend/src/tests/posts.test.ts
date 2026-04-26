@@ -38,8 +38,8 @@ describe("Posts Tests", () => {
   test("Get all posts", async () => {
     const res = await request(app).get(baseUrl);
     expect(res.statusCode).toBe(200);
-    expect(Array.isArray(res.body)).toBe(true);
-  });
+    expect(Array.isArray(res.body.posts)).toBe(true); 
+   });
 
   test("Update post", async () => {
     const authUser = {
