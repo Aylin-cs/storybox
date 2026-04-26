@@ -37,7 +37,8 @@ class AuthController {
       });
 
       res.status(201).json(user);
-    } catch {
+    } catch (err) {
+      console.log(err);
       res.status(500).json({ message: "Register failed" });
     }
   }
@@ -76,7 +77,7 @@ class AuthController {
     }
   }
 
-    async refresh(req: Request, res: Response) {
+  async refresh(req: Request, res: Response) {
     try {
       const { refreshToken } = req.body;
 
@@ -84,7 +85,9 @@ class AuthController {
         return res.status(400).json({ message: "Refresh token missing" });
       }
 
-      const payload = jwt.verify(refreshToken, REFRESH_SECRET) as { _id: string };
+      const payload = jwt.verify(refreshToken, REFRESH_SECRET) as {
+        _id: string;
+      };
 
       const user = await userModel.findById(payload._id);
 
@@ -98,7 +101,9 @@ class AuthController {
 
       const tokens = generateTokens(user._id!);
 
-      user.refreshToken = user.refreshToken.filter((token) => token !== refreshToken);
+      user.refreshToken = user.refreshToken.filter(
+        (token) => token !== refreshToken,
+      );
       user.refreshToken.push(tokens.refreshToken);
 
       await user.save();
@@ -112,7 +117,7 @@ class AuthController {
     }
   }
 
-    async logout(req: Request, res: Response) {
+  async logout(req: Request, res: Response) {
     try {
       const { refreshToken } = req.body;
 
@@ -120,7 +125,9 @@ class AuthController {
         return res.status(400).json({ message: "Refresh token missing" });
       }
 
-      const payload = jwt.verify(refreshToken, REFRESH_SECRET) as { _id: string };
+      const payload = jwt.verify(refreshToken, REFRESH_SECRET) as {
+        _id: string;
+      };
 
       const user = await userModel.findById(payload._id);
 
@@ -132,7 +139,9 @@ class AuthController {
         return res.status(401).json({ message: "Invalid refresh token" });
       }
 
-      user.refreshToken = user.refreshToken.filter((token) => token !== refreshToken);
+      user.refreshToken = user.refreshToken.filter(
+        (token) => token !== refreshToken,
+      );
 
       await user.save();
 
@@ -141,7 +150,6 @@ class AuthController {
       res.status(401).json({ message: "Invalid refresh token" });
     }
   }
-
 }
 
 export default new AuthController();
@@ -149,7 +157,11 @@ type Payload = {
   _id: string;
 };
 
-export const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
+export const authMiddleware = (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   const authorization = req.header("authorization");
   const token = authorization && authorization.split(" ")[1];
 
