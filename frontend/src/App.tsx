@@ -120,10 +120,20 @@
 // }
 
 // export default App
+import { Routes, Route } from "react-router-dom";
 import LoginForm from "./pages/LoginForm";
 
+function Home() {
+  return <h1>Home Page</h1>;
+}
+
 function App() {
-  return <LoginForm />;
+  return (
+    <Routes>
+      <Route path="/" element={<LoginForm />} />
+      <Route path="/home" element={<Home />} />
+    </Routes>
+  );
 }
 
 export default App;
