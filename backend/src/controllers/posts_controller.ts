@@ -16,7 +16,8 @@ class PostsController {
       });
 
       res.status(201).json(newPost);
-    } catch {
+    }  catch (err) {
+      console.log(err);
       res.status(500).json({ message: "Failed to create post" });
     }
   }
