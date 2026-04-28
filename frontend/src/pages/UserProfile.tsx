@@ -3,6 +3,7 @@ import userService, { type User } from "../services/user-service";
 import postService, { type Post } from "../services/post-service";
 import PostCard from "../components/PostCard";
 import { Link } from "react-router-dom";
+import LogoutButton from "../components/LogoutButton";
 
 const UserProfile = () => {
   const [user, setUser] = useState<User | null>(null);
@@ -16,7 +17,7 @@ const UserProfile = () => {
 
         const postsResponse = await postService.fetchPaginatedPosts(
           1,
-          userResponse.data._id
+          userResponse.data._id,
         ).request;
 
         setPosts(postsResponse.data.posts);
@@ -53,6 +54,9 @@ const UserProfile = () => {
       <p>{user.email}</p>
 
       <Link to="/edit-profile">Edit Profile</Link>
+
+      <br />
+      <LogoutButton />
 
       <h3>My Posts</h3>
 
