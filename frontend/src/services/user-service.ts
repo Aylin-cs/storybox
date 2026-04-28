@@ -12,4 +12,18 @@ const getUserById = (id: string) => {
   return { request };
 };
 
-export default { getUserById };
+const getCurrentUser = () => {
+  const request = apiClient.get<User>("/users/me");
+  return { request };
+};
+
+const updateMe = (data: FormData) => {
+  const request = apiClient.put<User>("/users/me", data, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+  return { request };
+};
+
+export default { getUserById, getCurrentUser, updateMe };
