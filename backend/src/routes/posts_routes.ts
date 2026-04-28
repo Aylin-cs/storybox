@@ -68,6 +68,20 @@ router.post("/", authMiddleware, upload.single("image"), (req, res) =>
  */
 
 router.get("/", (req, res) => postsController.getAll(req, res));
+
+/**
+ * @openapi
+ * /posts/my-posts:
+ *   get:
+ *     summary: Get posts created by the logged-in user
+ *     tags:
+ *       - Posts
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: List of my posts
+ */
 router.get("/my-posts", authMiddleware, (req, res) =>
   postsController.getMyPosts(req, res),
 );

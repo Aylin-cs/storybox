@@ -76,6 +76,35 @@ router.get("/:id", (req, res) =>
   commentsController.getById(req, res)
 );
 
+/**
+ * @openapi
+ * /comments/{id}:
+ *   put:
+ *     summary: Update a comment
+ *     tags:
+ *       - Comments
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               content:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Comment updated
+ */
+
 router.put("/:id", authMiddleware, (req, res) =>
   commentsController.update(req, res)
 );
