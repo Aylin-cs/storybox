@@ -78,9 +78,14 @@ class PostsController {
         return res.status(403).json({ message: "Forbidden" });
       }
 
+      const updateData = {
+        ...req.body,
+        image_uri: req.file ? req.file.filename : post.image_uri,
+      };
+
       const updatedPost = await postModel.findByIdAndUpdate(
         req.params.id,
-        req.body,
+        updateData,
         { new: true },
       );
 

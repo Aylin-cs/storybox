@@ -17,12 +17,13 @@ const MyPostsPage = () => {
 
       const postsWithUsers = await Promise.all(
         postsData.map(async (post: Post) => {
-          const userResponse = await userService.getUserById(post.ownerId).request;
+          const userResponse = await userService.getUserById(post.ownerId)
+            .request;
           return {
             ...post,
             username: userResponse.data.userName,
           };
-        })
+        }),
       );
 
       setPosts(postsWithUsers);
@@ -31,12 +32,26 @@ const MyPostsPage = () => {
     fetchPosts();
   }, []);
 
+  const handleDelete = async (postId: string) => {
+    try {
+      await postService.deletePost(postId);
+      setPosts((prevPosts) => prevPosts.filter((post) => post._id !== postId));
+    } catch (err) {
+      console.error("Failed to delete post", err);
+    }
+  };
+
   return (
     <div style={{ padding: "20px" }}>
       <h1>My Posts</h1>
 
       {posts.map((post) => (
-        <PostCard key={post._id} post={post} username={post.username} />
+        <PostCard
+          key={post._id}
+          post={post}
+          username={post.username}
+          onDelete={handleDelete}
+        />
       ))}
     </div>
   );
