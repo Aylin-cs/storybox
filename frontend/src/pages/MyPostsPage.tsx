@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import postService, { type Post } from "../services/post-service";
 import userService from "../services/user-service";
 import PostCard from "../components/PostCard";
@@ -8,22 +7,22 @@ type PostWithUser = Post & {
   username: string;
 };
 
-const HomePage = () => {
+const MyPostsPage = () => {
   const [posts, setPosts] = useState<PostWithUser[]>([]);
 
   useEffect(() => {
     const fetchPosts = async () => {
-      const response = await postService.fetchPaginatedPosts(1).request;
-      const postsData = response.data.posts;
+      const response = await postService.fetchMyPosts().request;
+      const postsData = response.data;
+
       const postsWithUsers = await Promise.all(
         postsData.map(async (post: Post) => {
-          const userResponse = await userService.getUserById(post.ownerId)
-            .request;
+          const userResponse = await userService.getUserById(post.ownerId).request;
           return {
             ...post,
             username: userResponse.data.userName,
           };
-        }),
+        })
       );
 
       setPosts(postsWithUsers);
@@ -34,9 +33,7 @@ const HomePage = () => {
 
   return (
     <div style={{ padding: "20px" }}>
-      <h1>Home</h1>
-
-      <Link to="/my-posts">My Posts</Link>
+      <h1>My Posts</h1>
 
       {posts.map((post) => (
         <PostCard key={post._id} post={post} username={post.username} />
@@ -45,4 +42,4 @@ const HomePage = () => {
   );
 };
 
-export default HomePage;
+export default MyPostsPage;

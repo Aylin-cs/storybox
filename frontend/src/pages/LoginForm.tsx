@@ -2,51 +2,60 @@ import { useState } from "react";
 import { authLogin } from "../services/auth-service";
 import { useNavigate } from "react-router-dom";
 
+import AuthCard from "../auth/AuthCard";
+import AuthButton from "../auth/AuthButton";
+import AuthSwitchLink from "../auth/AuthSwitchLink";
+import InputField from "../components/InputField";
+import Form from "../components/Form";
+
 const LoginForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+
   const navigate = useNavigate();
 
-  const handleSubmit = async (e: any) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     try {
       await authLogin({ email, password });
       navigate("/home");
-    } catch (err) {
+    } catch {
       setError("Login failed");
     }
   };
 
   return (
-    <div style={{ padding: "20px" }}>
-      <h2>Login</h2>
+    <Form onSubmit={handleSubmit}>
+      <AuthCard title="StoryBox" subtitle="Log in to continue.">
+        <InputField
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
 
-      <form onSubmit={handleSubmit}>
-        <div>
-          <input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </div>
+        <InputField
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
 
-        <div>
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </div>
+        {error && (
+          <p style={{ color: "red", textAlign: "center" }}>{error}</p>
+        )}
 
-        <button type="submit">Login</button>
-      </form>
+        <AuthButton label="Log in" />
 
-      {error && <p style={{ color: "red" }}>{error}</p>}
-    </div>
+        <AuthSwitchLink
+          text="Don't have an account?"
+          linkText="Sign up"
+          to="/register"
+        />
+      </AuthCard>
+    </Form>
   );
 };
 

@@ -16,7 +16,7 @@ class PostsController {
       });
 
       res.status(201).json(newPost);
-    }  catch (err) {
+    } catch (err) {
       console.log(err);
       res.status(500).json({ message: "Failed to create post" });
     }
@@ -49,6 +49,20 @@ class PostsController {
       });
     } catch {
       res.status(500).json({ message: "Failed to get posts" });
+    }
+  }
+
+  async getMyPosts(req: Request, res: Response) {
+    try {
+      const userId = req.params.userId;
+
+      const posts = await postModel
+        .find({ ownerId: userId })
+        .sort({ created_at: -1 });
+
+      res.status(200).json(posts);
+    } catch {
+      res.status(500).json({ message: "Failed to get my posts" });
     }
   }
 

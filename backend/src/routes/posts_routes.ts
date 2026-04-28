@@ -66,6 +66,9 @@ router.post("/", authMiddleware, upload.single("image"), (req, res) => postsCont
  */
 
 router.get("/", (req, res) => postsController.getAll(req, res));
+router.get("/my-posts", authMiddleware, (req, res) =>
+  postsController.getMyPosts(req, res)
+);
 
 /**
  * @openapi

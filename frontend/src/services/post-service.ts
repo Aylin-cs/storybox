@@ -19,12 +19,21 @@ export interface PaginatedPostsResponse {
 
 const fetchPaginatedPosts = (page: number, sender?: string) => {
   const controller = new AbortController();
-
   const url = sender
     ? `/posts?page=${page}&limit=10&sender=${sender}`
     : `/posts?page=${page}&limit=10`;
 
   const request = apiClient.get<PaginatedPostsResponse>(url, {
+    signal: controller.signal,
+  });
+
+  return { request, cancel: () => controller.abort() };
+};
+
+const fetchMyPosts = () => {
+  const controller = new AbortController();
+
+  const request = apiClient.get<Post[]>("/posts/my-posts", {
     signal: controller.signal,
   });
 
@@ -47,4 +56,4 @@ const createPost = (post: { content: string; image: File | null }) => {
   });
 };
 
-export default { fetchPaginatedPosts, createPost };
+export default { fetchPaginatedPosts, createPost, fetchMyPosts };
