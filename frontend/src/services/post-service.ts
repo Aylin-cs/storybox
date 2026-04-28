@@ -57,4 +57,33 @@ const createPost = (post: { content: string; image: File | null }) => {
   });
 };
 
-export default { fetchPaginatedPosts, createPost, fetchMyPosts };
+const updatePost = (
+  postId: string,
+  updatedPost: { content: string; image?: File | null }
+) => {
+  const formData = new FormData();
+
+  formData.append("content", updatedPost.content);
+
+  if (updatedPost.image) {
+    formData.append("image", updatedPost.image);
+  }
+
+  return apiClient.put(`/posts/${postId}`, formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+};
+
+const deletePost = (postId: string) => {
+  return apiClient.delete(`/posts/${postId}`);
+};
+
+export default {
+  fetchPaginatedPosts,
+  createPost,
+  fetchMyPosts,
+  deletePost,
+  updatePost,
+};

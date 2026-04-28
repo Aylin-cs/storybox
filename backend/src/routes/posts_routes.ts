@@ -42,7 +42,9 @@ const upload = multer({ storage });
  *         description: Post created
  */
 
-router.post("/", authMiddleware, upload.single("image"), (req, res) => postsController.create(req, res));
+router.post("/", authMiddleware, upload.single("image"), (req, res) =>
+  postsController.create(req, res),
+);
 
 /**
  * @openapi
@@ -67,7 +69,7 @@ router.post("/", authMiddleware, upload.single("image"), (req, res) => postsCont
 
 router.get("/", (req, res) => postsController.getAll(req, res));
 router.get("/my-posts", authMiddleware, (req, res) =>
-  postsController.getMyPosts(req, res)
+  postsController.getMyPosts(req, res),
 );
 
 /**
@@ -90,8 +92,9 @@ router.get("/my-posts", authMiddleware, (req, res) =>
  *         description: Post updated
  */
 
-router.put("/:id", authMiddleware, (req, res) => postsController.update(req, res));
-
+router.put("/:id", authMiddleware, upload.single("image"), (req, res) =>
+  postsController.update(req, res),
+);
 /**
  * @openapi
  * /posts/{id}:
@@ -112,7 +115,9 @@ router.put("/:id", authMiddleware, (req, res) => postsController.update(req, res
  *         description: Post deleted
  */
 
-router.delete("/:id", authMiddleware, (req, res) => postsController.delete(req, res));
+router.delete("/:id", authMiddleware, (req, res) =>
+  postsController.delete(req, res),
+);
 
 /**
  * @openapi
@@ -134,5 +139,7 @@ router.delete("/:id", authMiddleware, (req, res) => postsController.delete(req, 
  *         description: Like status updated
  */
 
-router.post("/:id/like", authMiddleware, (req, res) => postsController.like(req, res));
+router.post("/:id/like", authMiddleware, (req, res) =>
+  postsController.like(req, res),
+);
 export default router;

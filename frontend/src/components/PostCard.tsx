@@ -6,9 +6,10 @@ import likeService from "../services/like-service";
 interface Props {
   post: Post;
   username: string;
+  onDelete?: (postId: string) => void;
 }
 
-const PostCard = ({ post, username }: Props) => {
+const PostCard = ({ post, username, onDelete }: Props) => {
   const [likesCount, setLikesCount] = useState(post.likes?.length || 0);
   const [liked, setLiked] = useState(false);
 
@@ -43,6 +44,14 @@ const PostCard = ({ post, username }: Props) => {
       <button onClick={handleLike}>
         {liked ? "Unlike" : "Like"} ({likesCount})
       </button>
+
+      {onDelete && (
+        <>
+          <Link to={`/edit-post/${post._id}`}>Edit</Link>
+
+          <button onClick={() => onDelete(post._id)}>Delete</button>
+        </>
+      )}
     </div>
   );
 };
