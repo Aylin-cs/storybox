@@ -38,8 +38,8 @@ describe("Posts Tests", () => {
   test("Get all posts", async () => {
     const res = await request(app).get(baseUrl);
     expect(res.statusCode).toBe(200);
-    expect(Array.isArray(res.body.posts)).toBe(true); 
-   });
+    expect(Array.isArray(res.body.posts)).toBe(true);
+  });
 
   test("Update post", async () => {
     const authUser = {
@@ -97,6 +97,35 @@ describe("Posts Tests", () => {
       .set("Authorization", "Bearer " + loginRes.body.accessToken);
 
     expect(deleteRes.statusCode).toBe(200);
+  });
+
+  test("Like post", async () => {
+    const authUser = {
+      userName: "like_user",
+      email: "like@gmail.com",
+      password: "123456",
+    };
+
+    await request(app).post("/auth/register").send(authUser);
+
+    const loginRes = await request(app).post("/auth/login").send({
+      email: authUser.email,
+      password: authUser.password,
+    });
+
+    const createRes = await request(app)
+      .post(baseUrl)
+      .set("Authorization", "Bearer " + loginRes.body.accessToken)
+      .send({ content: "Like this post" });
+
+    const postId = createRes.body._id;
+
+    const likeRes = await request(app)
+      .post(`${baseUrl}/${postId}/like`)
+      .set("Authorization", "Bearer " + loginRes.body.accessToken);
+
+    expect(likeRes.statusCode).toBe(200);
+    expect(likeRes.body.likesCount).toBe(1);
   });
 
   afterAll(async () => {

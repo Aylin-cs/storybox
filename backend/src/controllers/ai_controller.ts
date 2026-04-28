@@ -13,7 +13,12 @@ class AiController {
       const apiKey = process.env.GEMINI_API_KEY;
 
       if (!apiKey) {
-        return res.status(500).json({ message: "Gemini API key is missing" });
+        const fallbackCaption = `Sharing a new StoryBox moment: ${content}`;
+
+        return res.status(200).json({
+          caption: fallbackCaption,
+          source: "fallback",
+        });
       }
 
       const genAI = new GoogleGenerativeAI(apiKey);
@@ -35,17 +40,17 @@ class AiController {
 
       res.status(200).json({ caption });
     } catch (err) {
-  console.log("Gemini error:", err);
+      console.log("Gemini error:", err);
 
-  const { content } = req.body;
+      const { content } = req.body;
 
-  const fallbackCaption = `Sharing a new StoryBox moment: ${content}`;
+      const fallbackCaption = `Sharing a new StoryBox moment: ${content}`;
 
-  res.status(200).json({
-    caption: fallbackCaption,
-    source: "fallback",
-  });
-}
+      res.status(200).json({
+        caption: fallbackCaption,
+        source: "fallback",
+      });
+    }
   }
 }
 
