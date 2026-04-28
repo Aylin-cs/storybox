@@ -6,6 +6,7 @@ import MyPostsPage from "./pages/MyPostsPage";
 import RegisterForm from "./pages/RegisterForm";
 import UserProfile from "./pages/UserProfile";
 import EditProfile from "./pages/EditProfile";
+import CommentsPage from "./pages/CommentsPage";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
       <Route path="/register" element={<RegisterForm />} />
       <Route path="/profile" element={<UserProfile />} />
       <Route path="/edit-profile" element={<EditProfile />} />
+      <Route path="/posts/:postId/comments" element={<CommentsPage />} />
     </Routes>
   );
 }

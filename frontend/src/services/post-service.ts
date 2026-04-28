@@ -7,6 +7,7 @@ export interface Post {
   image_uri?: string;
   created_at?: string;
   likes?: string[];
+  comment_count?: number;
 }
 
 export interface PaginatedPostsResponse {
