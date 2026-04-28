@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import postService, { type Post } from "../services/post-service";
 import userService from "../services/user-service";
 import PostCard from "../components/PostCard";
@@ -35,8 +34,6 @@ const HomePage = () => {
   return (
     <div style={{ padding: "20px" }}>
       <h1>Home</h1>
-
-      <Link to="/my-posts">My Posts</Link>
 
       {posts.map((post) => (
         <PostCard key={post._id} post={post} username={post.username} />

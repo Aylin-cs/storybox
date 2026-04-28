@@ -8,9 +8,12 @@ import UserProfile from "./pages/UserProfile";
 import EditProfile from "./pages/EditProfile";
 import CommentsPage from "./pages/CommentsPage";
 import EditPost from "./pages/EditPost";
+import NavBar from "./components/Navbar";
 
 function App() {
   return (
+    <>
+    <NavBar /> 
     <Routes>
       <Route path="/" element={<LoginForm />} />
       <Route path="/home" element={<HomePage />} />
@@ -22,6 +25,7 @@ function App() {
       <Route path="/posts/:postId/comments" element={<CommentsPage />} />
       <Route path="/edit-post/:postId" element={<EditPost />} />
     </Routes>
+    </>
   );
 }
 
