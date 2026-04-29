@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import postService, { type Post } from "../services/post-service";
 import userService from "../services/user-service";
 import PostCard from "../components/PostCard";
+import { Link } from "react-router-dom";
 
 type PostWithUser = Post & {
   username: string;
@@ -42,24 +43,27 @@ const MyPostsPage = () => {
   };
 
   return (
-  <div style={{ maxWidth: "900px", margin: "30px auto", padding: "20px" }}>
-    <h1 style={{ textAlign: "center", marginBottom: "25px" }}>My Posts</h1>
+    <div style={{ maxWidth: "900px", margin: "30px auto", padding: "20px" }}>
+      <h1 style={{ textAlign: "center", marginBottom: "25px" }}>My Posts</h1>
 
-    {posts.length === 0 ? (
-      <p style={{ textAlign: "center", color: "#666" }}>
-        You have not created any posts yet.
-      </p>
-    ) : (
-      posts.map((post) => (
-        <PostCard
-          key={post._id}
-          post={post}
-          username={post.username}
-          onDelete={handleDelete}
-        />
-      ))
-    )}
-  </div>
+      <div style={{ textAlign: "center", marginBottom: "20px" }}>
+        <Link to="/add-post">Add New Post</Link>
+      </div>
+      {posts.length === 0 ? (
+        <p style={{ textAlign: "center", color: "#666" }}>
+          You have not created any posts yet.
+        </p>
+      ) : (
+        posts.map((post) => (
+          <PostCard
+            key={post._id}
+            post={post}
+            username={post.username}
+            onDelete={handleDelete}
+          />
+        ))
+      )}
+    </div>
   );
 };
 
