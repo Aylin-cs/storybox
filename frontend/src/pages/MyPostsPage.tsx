@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import postService, { type Post } from "../services/post-service";
 import userService from "../services/user-service";
 import PostCard from "../components/PostCard";
+import { Link } from "react-router-dom";
 
 type PostWithUser = Post & {
   username: string;
@@ -44,6 +45,7 @@ const MyPostsPage = () => {
   return (
     <div style={{ padding: "20px" }}>
       <h1>My Posts</h1>
+      <Link to="/add-post">Add New Post</Link>
 
       {posts.map((post) => (
         <PostCard
