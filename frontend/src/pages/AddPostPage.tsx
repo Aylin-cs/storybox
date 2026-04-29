@@ -2,16 +2,19 @@ import { useState } from "react";
 import postService from "../services/post-service";
 import { useNavigate } from "react-router-dom";
 import { generateCaption } from "../services/ai-service";
+import ImageUploader from "../components/ImageUploader";
+import PostForm from "../components/PostForm";
 
 const AddPostPage = () => {
   const [content, setContent] = useState("");
   const [image, setImage] = useState<File | null>(null);
+  const [previewImage, setPreviewImage] = useState<string | null>(null);
   const [loadingAI, setLoadingAI] = useState(false);
   const navigate = useNavigate();
 
   const handleCreate = async () => {
     if (!content.trim()) {
-      alert("Content is required");
+      alert("Please add text before creating a post");
       return;
     }
     try {
@@ -43,84 +46,34 @@ const AddPostPage = () => {
   };
 
   return (
-    <div
-      style={{
-        maxWidth: "600px",
-        margin: "40px auto",
-        padding: "30px",
-        border: "1px solid #ccc",
-        borderRadius: "12px",
-        boxShadow: "0 4px 10px rgba(0,0,0,0.1)",
-        backgroundColor: "#fff",
-        textAlign: "center",
-      }}
-    >
-      <h2 style={{ marginBottom: "20px" }}>Create Post</h2>
+  <div
+    style={{
+      maxWidth: "900px",
+      width: "100%",
+      margin: "40px auto",
+      display: "flex",
+      borderRadius: "16px",
+      overflow: "hidden",
+      boxShadow: "0 8px 25px rgba(0,0,0,0.12)",
+      backgroundColor: "white",
+      height: "500px",
+    }}
+  >
+    <ImageUploader
+      previewImage={previewImage}
+      setPreviewImage={setPreviewImage}
+      setImage={setImage}
+    />
 
-      <textarea
-        placeholder="Write something..."
-        value={content}
-        onChange={(e) => setContent(e.target.value)}
-        style={{
-          width: "100%",
-          minHeight: "120px",
-          padding: "10px",
-          borderRadius: "8px",
-          border: "1px solid #ccc",
-          marginBottom: "20px",
-          resize: "none",
-        }}
-      />
-
-      <br />
-
-      {/* AI bottom */}
-      <button
-        onClick={handleGenerateAI}
-        disabled={loadingAI}
-        style={{
-          padding: "8px 16px",
-          borderRadius: "20px",
-          border: "none",
-          backgroundColor: "#333",
-          color: "white",
-          cursor: "pointer",
-          fontWeight: "bold",
-          marginBottom: "15px",
-        }}
-      >
-        {loadingAI ? "Generating..." : "Generate with AI"}
-      </button>
-
-      <br />
-
-      <div style={{ marginBottom: "12px" }}>
-        <input
-          type="file"
-          accept="image/*"
-          onChange={(e) => setImage(e.target.files?.[0] || null)}
-        />
-      </div>
-
-      <br />
-
-      <button
-        onClick={handleCreate}
-        style={{
-          padding: "10px 25px",
-          backgroundColor: "#ff9900",
-          color: "white",
-          border: "none",
-          borderRadius: "8px",
-          cursor: "pointer",
-          fontSize: "16px",
-          fontWeight: "bold",
-        }}
-      >
-        Create
-      </button>
-    </div>
-  );
+    <PostForm
+      content={content}
+      setContent={setContent}
+      handleGenerateAI={handleGenerateAI}
+      handleCreate={handleCreate}
+      loadingAI={loadingAI}
+    />
+  </div>
+);
 };
 
 export default AddPostPage;

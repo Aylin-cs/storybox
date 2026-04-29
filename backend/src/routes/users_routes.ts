@@ -47,7 +47,7 @@ router.get("/", usersController.getAll);
  */
 
 router.get("/me", authMiddleware, (req, res) =>
-  usersController.getById(req, res)
+  usersController.getMe(req, res)
 );
 
 /**
