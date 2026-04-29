@@ -14,7 +14,7 @@ const Form = ({ children, onSubmit }: FormProps) => {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "#f8f9fa",
+        backgroundColor: "#f5f6f8",
       }}
     >
       {children}

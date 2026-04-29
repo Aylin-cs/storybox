@@ -2,8 +2,7 @@ import { useEffect, useState } from "react";
 import userService, { type User } from "../services/user-service";
 import postService, { type Post } from "../services/post-service";
 import PostCard from "../components/PostCard";
-import { Link } from "react-router-dom";
-import LogoutButton from "../components/LogoutButton";
+import UserProfileHeader from "../components/UserProfileHeader";
 
 const UserProfile = () => {
   const [user, setUser] = useState<User | null>(null);
@@ -33,36 +32,26 @@ const UserProfile = () => {
     return <p>Loading profile...</p>;
   }
 
+  const profileImage = user.profile_picture_uri
+  ? user.profile_picture_uri.startsWith("http")
+    ? user.profile_picture_uri
+    : `http://localhost:3000/${user.profile_picture_uri.replace(/^\/+/, "")}`
+  : "https://via.placeholder.com/120";
   return (
-    <div style={{ padding: "20px" }}>
-      <h1>My Profile</h1>
+    <div style={{ maxWidth: "900px", margin: "30px auto", padding: "20px" }}>
+      <UserProfileHeader user={user} profileImage={profileImage} />
 
-      {user.profile_picture_uri && (
-        <img
-          src={`http://localhost:3000/uploads/${user.profile_picture_uri}`}
-          alt="profile"
-          style={{
-            width: "120px",
-            height: "120px",
-            borderRadius: "50%",
-            objectFit: "cover",
-          }}
-        />
+      <h4 style={{ marginTop: "30px", marginBottom: "25px", color: "#333" }}>Posts</h4>
+
+      {posts.length === 0 ? (
+        <p style={{ color: "#666" }}>
+          This user hasn't posted anything yet.
+        </p>
+      ) : (
+        posts.map((post) => (
+          <PostCard key={post._id} post={post} username={user.userName} />
+        ))
       )}
-
-      <h2>{user.userName}</h2>
-      <p>{user.email}</p>
-
-      <Link to="/edit-profile">Edit Profile</Link>
-
-      <br />
-      <LogoutButton />
-
-      <h3>My Posts</h3>
-
-      {posts.map((post) => (
-        <PostCard key={post._id} post={post} username={user.userName} />
-      ))}
     </div>
   );
 };

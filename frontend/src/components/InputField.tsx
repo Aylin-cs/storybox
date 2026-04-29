@@ -12,7 +12,7 @@ const InputField = ({
   onChange,
 }: InputFieldProps) => {
   return (
-    <div style={{ marginBottom: "15px" }}>
+    <div style={{ marginBottom: "14px" }}>
       <input
         type={type}
         placeholder={placeholder}
@@ -20,11 +20,13 @@ const InputField = ({
         onChange={onChange}
         style={{
           width: "100%",
-          padding: "12px",
-          border: "1px solid #ccc",
-          borderRadius: "4px",
-          fontSize: "16px",
+          padding: "10px 12px",
+          border: "1px solid #dcdcdc",
+          borderRadius: "6px",
+          fontSize: "15px",
           boxSizing: "border-box",
+          outline: "none",
+          backgroundColor: "#fff",
         }}
       />
     </div>

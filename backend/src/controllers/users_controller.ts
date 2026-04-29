@@ -13,7 +13,7 @@ class UsersController {
 
   async getById(req: Request, res: Response) {
     try {
-      const id = req.params.userId || req.params.id;
+      const id = req.params.userId ?? req.params.id;
       const user = await userModel.findById(id);
 
       if (!user) {
@@ -26,38 +26,53 @@ class UsersController {
     }
   }
 
-  async updateMe(req: Request, res: Response) {
-  try {
-    const userId = req.params.userId as string;
+  async getMe(req: Request, res: Response) {
+    try {
+      const userId = req.params.userId;
+      const user = await userModel.findById(userId);
 
-    const updateData: {
-      userName?: string;
-      profile_picture_uri?: string;
-    } = {};
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
 
-    if (req.body.userName) {
-      updateData.userName = req.body.userName;
+      res.status(200).json(user);
+    } catch {
+      res.status(500).json({ message: "Failed to get current user" });
     }
-
-    if (req.file) {
-      updateData.profile_picture_uri = req.file.filename;
-    }
-
-    const updatedUser = await userModel.findByIdAndUpdate(
-      userId,
-      updateData,
-      { new: true }
-    );
-
-    if (!updatedUser) {
-      return res.status(404).json({ message: "User not found" });
-    }
-
-    res.status(200).json(updatedUser);
-  } catch {
-    res.status(500).json({ message: "Failed to update user" });
   }
-}
+  
+  async updateMe(req: Request, res: Response) {
+    try {
+      const userId = req.params.userId as string;
+
+      const updateData: {
+        userName?: string;
+        profile_picture_uri?: string;
+      } = {};
+
+      if (req.body.userName) {
+        updateData.userName = req.body.userName;
+      }
+
+      if (req.file) {
+        updateData.profile_picture_uri = req.file.filename;
+      }
+
+      const updatedUser = await userModel.findByIdAndUpdate(
+        userId,
+        updateData,
+        { new: true },
+      );
+
+      if (!updatedUser) {
+        return res.status(404).json({ message: "User not found" });
+      }
+
+      res.status(200).json(updatedUser);
+    } catch {
+      res.status(500).json({ message: "Failed to update user" });
+    }
+  }
 
   async create(req: Request, res: Response) {
     try {

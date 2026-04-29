@@ -16,42 +16,148 @@ const PostCard = ({ post, username, onDelete }: Props) => {
   const handleLike = async () => {
     try {
       const response = await likeService.toggleLike(post._id).request;
-
       setLikesCount(response.data.likesCount);
       setLiked(response.data.liked);
     } catch (err) {
       console.error("Failed to like post", err);
     }
   };
-  return (
-    <div style={{ border: "1px solid black", margin: "10px", padding: "10px" }}>
-      <strong>{username}</strong>
 
-      <p>{post.content}</p>
+  return (
+    <div
+      style={{
+        maxWidth: "330px",
+        margin: "25px auto",
+        border: "1px solid #ddd",
+        borderRadius: "14px",
+        overflow: "hidden",
+        backgroundColor: "#fff",
+        boxShadow: "0 4px 10px rgba(0,0,0,0.08)",
+      }}
+    >
+      <div
+        style={{
+          padding: "14px 18px",
+          borderBottom: "1px solid #eee",
+          fontWeight: "bold",
+          fontSize: "18px",
+          color: "#333",
+          textAlign: "center",
+        }}
+      >
+        {username}
+      </div>
 
       {post.image_uri && (
         <img
           src={`http://localhost:3000/uploads/${post.image_uri}`}
           alt="post"
-          style={{ width: "100%", maxHeight: "300px", objectFit: "cover" }}
+          style={{
+            width: "100%",
+            height: "260px",
+            objectFit: "cover",
+            display: "block",
+          }}
         />
       )}
-      <Link to={`/posts/${post._id}/comments`}>
-        View Comments ({post.comment_count || 0})
-      </Link>
 
-      <br />
-      <button onClick={handleLike}>
-        {liked ? "Unlike" : "Like"} ({likesCount})
-      </button>
+      <div style={{ padding: "18px", textAlign: "center" }}>
+        <p
+          style={{
+            marginBottom: "14px",
+            lineHeight: "1.5",
+            fontSize: "15px",
+            color: "#444",
+            display: "-webkit-box",
+            WebkitBoxOrient: "vertical",
+            WebkitLineClamp: 2,
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+          }}
+        >
+          <strong>{username}</strong> {post.content}
+        </p>
 
-      {onDelete && (
-        <>
-          <Link to={`/edit-post/${post._id}`}>Edit</Link>
+        <div
+          style={{
+            display: "flex",
+            gap: "15px",
+            alignItems: "center",
+            justifyContent: "center",
+            marginBottom: "15px",
+            flexWrap: "wrap",
+          }}
+        >
+          <button
+            onClick={handleLike}
+            style={{
+              padding: "8px 14px",
+              borderRadius: "20px",
+              border: "none",
+              backgroundColor: liked ? "#ff9900" : "#333",
+              color: "white",
+              cursor: "pointer",
+              fontWeight: "bold",
+            }}
+          >
+            {liked ? "Unlike" : "Like"} ({likesCount})
+          </button>
 
-          <button onClick={() => onDelete(post._id)}>Delete</button>
-        </>
-      )}
+          <Link
+            to={`/posts/${post._id}/comments`}
+            style={{
+              textDecoration: "none",
+              padding: "8px 14px",
+              borderRadius: "20px",
+              backgroundColor: "#f2f2f2",
+              color: "#333",
+              fontWeight: "bold",
+            }}
+          >
+            Comments ({post.comment_count || 0})
+          </Link>
+        </div>
+
+        {onDelete && (
+          <div
+            style={{
+              display: "flex",
+              gap: "12px",
+              justifyContent: "center",
+              flexWrap: "wrap",
+            }}
+          >
+            <Link
+              to={`/edit-post/${post._id}`}
+              style={{
+                textDecoration: "none",
+                padding: "8px 14px",
+                borderRadius: "20px",
+                backgroundColor: "#333",
+                color: "white",
+                fontWeight: "bold",
+              }}
+            >
+              Edit
+            </Link>
+
+            <button
+              onClick={() => onDelete(post._id)}
+              style={{
+                padding: "8px 14px",
+                borderRadius: "20px",
+                border: "none",
+                backgroundColor: "#cc3333",
+                color: "white",
+                cursor: "pointer",
+                fontWeight: "bold",
+              }}
+            >
+              Delete
+            </button>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

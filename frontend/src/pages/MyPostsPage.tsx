@@ -43,18 +43,46 @@ const MyPostsPage = () => {
   };
 
   return (
-    <div style={{ padding: "20px" }}>
-      <h1>My Posts</h1>
-      <Link to="/add-post">Add New Post</Link>
+    <div style={{ maxWidth: "900px", margin: "30px auto", padding: "20px" }}>
+      <h1
+        style={{
+          textAlign: "center",
+          marginTop: "20px",
+          marginBottom: "20px",
+          fontSize: "48px",
+          color: "#333",
+        }}
+      >
+        My Posts
+      </h1>
 
-      {posts.map((post) => (
-        <PostCard
-          key={post._id}
-          post={post}
-          username={post.username}
-          onDelete={handleDelete}
-        />
-      ))}
+      <div style={{ textAlign: "center", marginBottom: "28px" }}>
+        <Link
+          to="/add-post"
+          style={{
+            textDecoration: "none",
+            color: "#6a0dad",
+            fontWeight: "bold",
+            fontSize: "20px",
+          }}
+        >
+          Add New Post
+        </Link>
+      </div>
+      {posts.length === 0 ? (
+        <p style={{ textAlign: "center", color: "#666" }}>
+          You have not created any posts yet.
+        </p>
+      ) : (
+        posts.map((post) => (
+          <PostCard
+            key={post._id}
+            post={post}
+            username={post.username}
+            onDelete={handleDelete}
+          />
+        ))
+      )}
     </div>
   );
 };

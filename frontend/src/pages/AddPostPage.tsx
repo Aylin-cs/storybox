@@ -2,14 +2,21 @@ import { useState } from "react";
 import postService from "../services/post-service";
 import { useNavigate } from "react-router-dom";
 import { generateCaption } from "../services/ai-service";
+import ImageUploader from "../components/ImageUploader";
+import PostForm from "../components/PostForm";
 
 const AddPostPage = () => {
   const [content, setContent] = useState("");
   const [image, setImage] = useState<File | null>(null);
+  const [previewImage, setPreviewImage] = useState<string | null>(null);
   const [loadingAI, setLoadingAI] = useState(false);
   const navigate = useNavigate();
 
   const handleCreate = async () => {
+    if (!content.trim()) {
+      alert("Please add text before creating a post");
+      return;
+    }
     try {
       await postService.createPost({ content, image });
       alert("Post created!");
@@ -39,35 +46,34 @@ const AddPostPage = () => {
   };
 
   return (
-    <div style={{ padding: "20px" }}>
-      <h2>Create Post</h2>
+  <div
+    style={{
+      maxWidth: "900px",
+      width: "100%",
+      margin: "40px auto",
+      display: "flex",
+      borderRadius: "16px",
+      overflow: "hidden",
+      boxShadow: "0 8px 25px rgba(0,0,0,0.12)",
+      backgroundColor: "white",
+      height: "500px",
+    }}
+  >
+    <ImageUploader
+      previewImage={previewImage}
+      setPreviewImage={setPreviewImage}
+      setImage={setImage}
+    />
 
-      <textarea
-        placeholder="Write something..."
-        value={content}
-        onChange={(e) => setContent(e.target.value)}
-      />
-
-      <br />
-
-      {/* 👇 כפתור AI */}
-      <button onClick={handleGenerateAI} disabled={loadingAI}>
-        {loadingAI ? "Generating..." : "Generate with AI"}
-      </button>
-
-      <br />
-
-      <input
-        type="file"
-        accept="image/*"
-        onChange={(e) => setImage(e.target.files?.[0] || null)}
-      />
-
-      <br />
-
-      <button onClick={handleCreate}>Create</button>
-    </div>
-  );
+    <PostForm
+      content={content}
+      setContent={setContent}
+      handleGenerateAI={handleGenerateAI}
+      handleCreate={handleCreate}
+      loadingAI={loadingAI}
+    />
+  </div>
+);
 };
 
 export default AddPostPage;

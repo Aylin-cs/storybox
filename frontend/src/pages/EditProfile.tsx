@@ -40,30 +40,112 @@ const EditProfile = () => {
   };
 
   return (
-    <div style={{ padding: "20px" }}>
-      <h1>Edit Profile</h1>
+    <div
+      style={{
+        maxWidth: "500px",
+        margin: "40px auto",
+        padding: "35px",
+        border: "1px solid #ddd",
+        borderRadius: "14px",
+        boxShadow: "0 4px 12px rgba(0,0,0,0.08)",
+        backgroundColor: "#fff",
+        textAlign: "center",
+      }}
+    >
+      <h1
+        style={{
+          marginBottom: "25px",
+          fontSize: "30px",
+          fontWeight: "bold",
+        }}
+      >
+        Edit Profile
+      </h1>
 
-      <form onSubmit={handleSubmit}>
-        <div>
+      <div style={{ marginBottom: "25px" }}>
+        <img
+          src={
+            image
+              ? URL.createObjectURL(image)
+              : "https://cdn-icons-png.flaticon.com/512/847/847969.png"
+          }
+          alt="Profile Preview"
+          style={{
+            width: "120px",
+            height: "120px",
+            borderRadius: "50%",
+            objectFit: "cover",
+            border: "3px solid #ddd",
+          }}
+        />
+      </div>
+
+      <form
+        onSubmit={handleSubmit}
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
+        <div style={{ marginBottom: "20px" }}>
           <input
             type="text"
             value={userName}
             onChange={(e) => setUserName(e.target.value)}
             placeholder="Username"
+            style={{
+              width: "240%px",
+              padding: "12px 12px 12px 6px",
+              borderRadius: "8px",
+              border: "1px solid #ccc",
+              fontSize: "16px",
+              fontWeight: "normal",
+              textAlign: "left",
+            }}
           />
         </div>
 
-        <div>
-          <input
-            type="file"
-            accept="image/*"
-            onChange={(e) =>
-              setImage(e.target.files ? e.target.files[0] : null)
-            }
-          />
+        <div style={{ marginBottom: "25px" }}>
+          <label
+            style={{
+              display: "inline-block",
+              padding: "10px 18px",
+              backgroundColor: "#333",
+              color: "white",
+              borderRadius: "8px",
+              cursor: "pointer",
+              fontWeight: "bold",
+            }}
+          >
+            Upload New Photo
+            <input
+              type="file"
+              accept="image/*"
+              style={{ display: "none" }}
+              onChange={(e) =>
+                setImage(e.target.files ? e.target.files[0] : null)
+              }
+            />
+          </label>
         </div>
 
-        <button type="submit">Save Changes</button>
+        <button
+          type="submit"
+          style={{
+            width: "100%",
+            padding: "14px",
+            backgroundColor: "#ff9900",
+            color: "white",
+            border: "none",
+            borderRadius: "8px",
+            cursor: "pointer",
+            fontSize: "16px",
+            fontWeight: "bold",
+          }}
+        >
+          Save Changes
+        </button>
       </form>
     </div>
   );
