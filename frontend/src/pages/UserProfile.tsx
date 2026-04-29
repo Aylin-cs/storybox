@@ -33,63 +33,65 @@ const UserProfile = () => {
     return <p>Loading profile...</p>;
   }
 
+  const profileImage = user.profile_picture_uri
+    ? `http://localhost:3000/uploads/${user.profile_picture_uri}`
+    : "https://via.placeholder.com/120";
   return (
     <div style={{ maxWidth: "900px", margin: "30px auto", padding: "20px" }}>
       <div
         style={{
-          padding: "25px",
-          border: "1px solid #ddd",
-          borderRadius: "12px",
-          boxShadow: "0 4px 10px rgba(0,0,0,0.1)",
-          backgroundColor: "#fff",
-          textAlign: "center",
-          marginBottom: "30px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          marginBottom: "40px",
+          position: "relative",
+          paddingBottom: "20px",
         }}
       >
-        <h1 style={{ fontSize: "42px", marginBottom: "15px" }}>My Profile</h1>
-
-        {user.profile_picture_uri && (
+        <div style={{ display: "flex", alignItems: "center", width: "100%" }}>
           <img
-            src={`http://localhost:3000/uploads/${user.profile_picture_uri}`}
+            src={profileImage}
             alt="profile"
             style={{
               width: "120px",
               height: "120px",
               borderRadius: "50%",
               objectFit: "cover",
-              marginBottom: "15px",
+              marginRight: "20px",
             }}
           />
-        )}
 
-        <h2>{user.userName}</h2>
-        <p style={{ color: "#666" }}>{user.email}</p>
+          <div style={{ marginLeft: "15px" }}>
+            <h1 style={{ fontSize: "38px", marginBottom: "8px" }}>
+              {user.userName}
+            </h1>
 
-        <Link
-          to="/edit-profile"
-          style={{
-            display: "inline-block",
-            padding: "8px 16px",
-            borderRadius: "20px",
-            backgroundColor: "#333",
-            color: "white",
-            textDecoration: "none",
-            fontWeight: "bold",
-            marginTop: "8px",
-          }}
-        >
-          Edit Profile
-        </Link>
+            <p style={{ color: "#666", marginBottom: "12px" }}>{user.email}</p>
 
-        <div style={{ marginTop: "15px" }}>
-          <LogoutButton />
+            <Link
+              to="/edit-profile"
+              style={{
+                display: "inline-block",
+                padding: "8px 16px",
+                borderRadius: "6px",
+                backgroundColor: "#333",
+                color: "white",
+                textDecoration: "none",
+                fontWeight: "bold",
+              }}
+            >
+              Edit Profile
+            </Link>
+          </div>
         </div>
+
+        <LogoutButton />
       </div>
 
       <h3
         style={{
           textAlign: "center",
-          marginTop: "80px",
+          marginTop: "30px",
           marginBottom: "25px",
           fontSize: "36px",
           color: "#555",

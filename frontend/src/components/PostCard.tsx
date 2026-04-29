@@ -26,7 +26,7 @@ const PostCard = ({ post, username, onDelete }: Props) => {
   return (
     <div
       style={{
-        maxWidth: "650px",
+        maxWidth: "330px",
         margin: "25px auto",
         border: "1px solid #ddd",
         borderRadius: "14px",
@@ -54,7 +54,7 @@ const PostCard = ({ post, username, onDelete }: Props) => {
           alt="post"
           style={{
             width: "100%",
-            height: "360px",
+            height: "260px",
             objectFit: "cover",
             display: "block",
           }}
@@ -64,10 +64,15 @@ const PostCard = ({ post, username, onDelete }: Props) => {
       <div style={{ padding: "18px", textAlign: "center" }}>
         <p
           style={{
-            marginBottom: "18px",
-            lineHeight: "1.6",
-            fontSize: "16px",
+            marginBottom: "14px",
+            lineHeight: "1.5",
+            fontSize: "15px",
             color: "#444",
+            display: "-webkit-box",
+            WebkitBoxOrient: "vertical",
+            WebkitLineClamp: 2,
+            overflow: "hidden",
+            textOverflow: "ellipsis",
           }}
         >
           <strong>{username}</strong> {post.content}

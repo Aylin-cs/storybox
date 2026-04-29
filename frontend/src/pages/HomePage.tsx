@@ -51,13 +51,13 @@ const HomePage = () => {
   }, []);
 
   return (
-    <div style={{ maxWidth: "900px", margin: "30px auto", padding: "20px" }}>
+    <div style={{ maxWidth: "900px", margin: "30px auto", padding: "5px" }}>
       <h1
         style={{
           textAlign: "center",
-          marginBottom: "30px",
-          marginTop: "20px",
-          fontSize: "48px",
+          marginBottom: "20px",
+          marginTop: "5px",
+          fontSize: "42px",
         }}
       >
         Home
