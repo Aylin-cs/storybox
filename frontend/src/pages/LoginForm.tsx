@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { authLogin } from "../services/auth-service";
 import { useNavigate } from "react-router-dom";
+import { GoogleLogin,type CredentialResponse } from "@react-oauth/google";
+import { googleSignin } from "../services/auth-service";
 
 import AuthCard from "../auth/AuthCard";
 import AuthButton from "../auth/AuthButton";
@@ -26,9 +28,36 @@ const LoginForm = () => {
     }
   };
 
+  const onGoogleLoginSuccess = async (
+    credentialResponse: CredentialResponse,
+  ) => {
+    try {
+      await googleSignin(credentialResponse);
+      navigate("/home");
+    } catch {
+      setError("Google login failed");
+    }
+  };
+
   return (
     <Form onSubmit={handleSubmit}>
       <AuthCard title="StoryBox" subtitle="Log in to continue.">
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            marginBottom: "15px",
+          }}
+        >
+          <GoogleLogin
+            onSuccess={onGoogleLoginSuccess}
+            onError={() => setError("Google login failed")}
+          />
+        </div>
+
+        <p style={{ textAlign: "center", color: "#666", marginBottom: "15px" }}>
+          OR
+        </p>
         <InputField
           type="email"
           placeholder="Email"
@@ -43,9 +72,7 @@ const LoginForm = () => {
           onChange={(e) => setPassword(e.target.value)}
         />
 
-        {error && (
-          <p style={{ color: "red", textAlign: "center" }}>{error}</p>
-        )}
+        {error && <p style={{ color: "red", textAlign: "center" }}>{error}</p>}
 
         <AuthButton label="Log in" />
 

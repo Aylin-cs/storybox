@@ -8,14 +8,15 @@ const AuthButton = ({ label }: AuthButtonProps) => {
       type="submit"
       style={{
         width: "100%",
-        padding: "12px",
+        padding: "10px",
         backgroundColor: "#0d6efd",
         color: "white",
         border: "none",
-        borderRadius: "4px",
-        fontSize: "16px",
+        borderRadius: "6px",
+        fontSize: "15px",
+        fontWeight: "500",
         cursor: "pointer",
-        marginTop: "10px",
+        marginTop: "8px",
       }}
     >
       {label}

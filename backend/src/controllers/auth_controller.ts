@@ -2,9 +2,11 @@ import { NextFunction, Request, Response } from "express";
 import { userModel } from "../models/users_model";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { OAuth2Client } from "google-auth-library";
 
 const ACCESS_SECRET = "access_secret";
 const REFRESH_SECRET = "refresh_secret";
+const client = new OAuth2Client();
 
 export const hashPassword = async (password: string) => {
   const salt = await bcrypt.genSalt(10);
@@ -148,6 +150,52 @@ class AuthController {
       res.status(200).json({ message: "Logged out successfully" });
     } catch {
       res.status(401).json({ message: "Invalid refresh token" });
+    }
+  }
+
+  async googleSignin(req: Request, res: Response) {
+    try {
+      if (!req.body.credential) {
+        return res.status(400).json({ message: "Missing credential" });
+      }
+
+      const ticket = await client.verifyIdToken({
+        idToken: req.body.credential,
+        audience: process.env.GOOGLE_CLIENT_ID,
+      });
+
+      const payload = ticket.getPayload();
+
+      if (!payload?.email) {
+        return res.status(400).json({ message: "Invalid Google token" });
+      }
+
+      let user = await userModel.findOne({ email: payload.email });
+
+      if (!user) {
+        user = await userModel.create({
+          email: payload.email,
+          userName: payload.email.split("@")[0],
+          password: "google-signin",
+          profile_picture: payload.picture || null,
+        });
+      }
+
+      const tokens = generateTokens(user._id!);
+
+      if (!user.refreshToken) {
+        user.refreshToken = [];
+      }
+
+      user.refreshToken.push(tokens.refreshToken);
+      await user.save();
+
+      res.status(200).json({
+        accessToken: tokens.accessToken,
+        refreshToken: tokens.refreshToken,
+      });
+    } catch {
+      res.status(500).json({ message: "Google login failed" });
     }
   }
 }

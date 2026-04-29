@@ -40,3 +40,14 @@ export const authLogout = async () => {
   localStorage.removeItem("accessToken");
   localStorage.removeItem("refreshToken");
 };
+
+export const googleSignin = async (credentialResponse: any) => {
+  const response = await apiClient.post("/auth/google", {
+    credential: credentialResponse.credential,
+  });
+
+  localStorage.setItem("accessToken", response.data.accessToken);
+  localStorage.setItem("refreshToken", response.data.refreshToken);
+
+  return response.data;
+};

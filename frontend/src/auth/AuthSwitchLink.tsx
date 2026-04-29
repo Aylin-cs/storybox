@@ -12,14 +12,21 @@ const AuthSwitchLink = ({
   to,
 }: AuthSwitchLinkProps) => {
   return (
-    <p style={{ textAlign: "center", marginTop: "20px" }}>
+    <p
+      style={{
+        textAlign: "center",
+        marginTop: "18px",
+        fontSize: "14px",
+        color: "#666",
+      }}
+    >
       {text}{" "}
       <Link
         to={to}
         style={{
           color: "#0d6efd",
           textDecoration: "none",
-          fontWeight: "bold",
+          fontWeight: "600",
         }}
       >
         {linkText}
