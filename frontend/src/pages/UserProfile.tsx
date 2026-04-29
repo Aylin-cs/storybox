@@ -34,57 +34,81 @@ const UserProfile = () => {
   }
 
   return (
-  <div style={{ maxWidth: "900px", margin: "30px auto", padding: "20px" }}>
-    <div
-      style={{
-        padding: "25px",
-        border: "1px solid #ddd",
-        borderRadius: "12px",
-        boxShadow: "0 4px 10px rgba(0,0,0,0.1)",
-        backgroundColor: "#fff",
-        textAlign: "center",
-        marginBottom: "30px",
-      }}
-    >
-      <h1>My Profile</h1>
+    <div style={{ maxWidth: "900px", margin: "30px auto", padding: "20px" }}>
+      <div
+        style={{
+          padding: "25px",
+          border: "1px solid #ddd",
+          borderRadius: "12px",
+          boxShadow: "0 4px 10px rgba(0,0,0,0.1)",
+          backgroundColor: "#fff",
+          textAlign: "center",
+          marginBottom: "30px",
+        }}
+      >
+        <h1 style={{ fontSize: "42px", marginBottom: "15px" }}>My Profile</h1>
 
-      {user.profile_picture_uri && (
-        <img
-          src={`http://localhost:3000/uploads/${user.profile_picture_uri}`}
-          alt="profile"
+        {user.profile_picture_uri && (
+          <img
+            src={`http://localhost:3000/uploads/${user.profile_picture_uri}`}
+            alt="profile"
+            style={{
+              width: "120px",
+              height: "120px",
+              borderRadius: "50%",
+              objectFit: "cover",
+              marginBottom: "15px",
+            }}
+          />
+        )}
+
+        <h2>{user.userName}</h2>
+        <p style={{ color: "#666" }}>{user.email}</p>
+
+        <Link
+          to="/edit-profile"
           style={{
-            width: "120px",
-            height: "120px",
-            borderRadius: "50%",
-            objectFit: "cover",
-            marginBottom: "15px",
+            display: "inline-block",
+            padding: "8px 16px",
+            borderRadius: "20px",
+            backgroundColor: "#333",
+            color: "white",
+            textDecoration: "none",
+            fontWeight: "bold",
+            marginTop: "8px",
           }}
-        />
-      )}
+        >
+          Edit Profile
+        </Link>
 
-      <h2>{user.userName}</h2>
-      <p style={{ color: "#666" }}>{user.email}</p>
-
-      <Link to="/edit-profile">Edit Profile</Link>
-
-      <div style={{ marginTop: "15px" }}>
-        <LogoutButton />
+        <div style={{ marginTop: "15px" }}>
+          <LogoutButton />
+        </div>
       </div>
+
+      <h3
+        style={{
+          textAlign: "center",
+          marginTop: "80px",
+          marginBottom: "25px",
+          fontSize: "36px",
+          color: "#555",
+        }}
+      >
+        My Posts
+      </h3>
+
+      {posts.length === 0 ? (
+        <p style={{ textAlign: "center", color: "#666" }}>
+          You have not created any posts yet.
+        </p>
+      ) : (
+        posts.map((post) => (
+          <PostCard key={post._id} post={post} username={user.userName} />
+        ))
+      )}
     </div>
-
-    <h3 style={{ textAlign: "center", marginBottom: "20px" }}>My Posts</h3>
-
-    {posts.length === 0 ? (
-      <p style={{ textAlign: "center", color: "#666" }}>
-        You have not created any posts yet.
-      </p>
-    ) : (
-      posts.map((post) => (
-        <PostCard key={post._id} post={post} username={user.userName} />
-      ))
-    )}
-  </div>
-);
+  );
 };
 
 export default UserProfile;

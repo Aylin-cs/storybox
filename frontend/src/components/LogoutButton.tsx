@@ -13,7 +13,22 @@ const LogoutButton = () => {
     }
   };
 
-  return <button onClick={handleLogout}>Logout</button>;
+  return (
+    <button
+      onClick={handleLogout}
+      style={{
+        padding: "10px 20px",
+        borderRadius: "20px",
+        border: "none",
+        backgroundColor: "#cc3333",
+        color: "white",
+        fontWeight: "bold",
+        cursor: "pointer",
+      }}
+    >
+      Logout
+    </button>
+  );
 };
 
 export default LogoutButton;

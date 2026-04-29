@@ -44,10 +44,30 @@ const MyPostsPage = () => {
 
   return (
     <div style={{ maxWidth: "900px", margin: "30px auto", padding: "20px" }}>
-      <h1 style={{ textAlign: "center", marginBottom: "25px" }}>My Posts</h1>
+      <h1
+        style={{
+          textAlign: "center",
+          marginTop: "20px",
+          marginBottom: "20px",
+          fontSize: "48px",
+          color: "#333",
+        }}
+      >
+        My Posts
+      </h1>
 
-      <div style={{ textAlign: "center", marginBottom: "20px" }}>
-        <Link to="/add-post">Add New Post</Link>
+      <div style={{ textAlign: "center", marginBottom: "28px" }}>
+        <Link
+          to="/add-post"
+          style={{
+            textDecoration: "none",
+            color: "#6a0dad",
+            fontWeight: "bold",
+            fontSize: "20px",
+          }}
+        >
+          Add New Post
+        </Link>
       </div>
       {posts.length === 0 ? (
         <p style={{ textAlign: "center", color: "#666" }}>

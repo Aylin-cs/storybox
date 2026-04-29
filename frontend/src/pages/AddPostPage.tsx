@@ -75,18 +75,32 @@ const AddPostPage = () => {
       <br />
 
       {/* AI bottom */}
-      <button onClick={handleGenerateAI} disabled={loadingAI}>
+      <button
+        onClick={handleGenerateAI}
+        disabled={loadingAI}
+        style={{
+          padding: "8px 16px",
+          borderRadius: "20px",
+          border: "none",
+          backgroundColor: "#333",
+          color: "white",
+          cursor: "pointer",
+          fontWeight: "bold",
+          marginBottom: "15px",
+        }}
+      >
         {loadingAI ? "Generating..." : "Generate with AI"}
       </button>
 
       <br />
-      
-      <input
-        type="file"
-        accept="image/*"
-        onChange={(e) => setImage(e.target.files?.[0] || null)}
-        style={{ marginBottom: "20px" }}
-      />
+
+      <div style={{ marginBottom: "12px" }}>
+        <input
+          type="file"
+          accept="image/*"
+          onChange={(e) => setImage(e.target.files?.[0] || null)}
+        />
+      </div>
 
       <br />
 
