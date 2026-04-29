@@ -9,7 +9,7 @@
     "build:dev": "tsc",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "build:prod": "tsc -p tsconfig_prod.json"
+    "build:prod": "tsc -p tsconfig.json"
   },
   "dependencies": {
     "@google/generative-ai": "^0.22.0",
